@@ -153,7 +153,7 @@ MainLayer.prototype.onItem1 = function(sender) {
                         this.searchEntityWithCallbackTestCase,
                         this.createEntityWithCallbackTestCase,
                         this.getEntityWithCallbackTestCase,
-                        //this.updateEntityWithCallbackTestCase,
+                        this.updateEntityWithCallbackTestCase,
                         this.removeEntityWithCallbackTestCase,
                         this.logoutWithCallbackTestCase]);
 
