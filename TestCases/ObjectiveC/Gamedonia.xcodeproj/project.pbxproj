@@ -183,8 +183,6 @@
 		5F6E63BD16B2FA1800CC7AF5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E63BC16B2FA1800CC7AF5 /* AppDelegate.m */; };
 		5F6E63BF16B2FA1800CC7AF5 /* grossini_dance_atlas.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F6E63BE16B2FA1800CC7AF5 /* grossini_dance_atlas.png */; };
 		5F6E63C116B2FA1800CC7AF5 /* main.js in Resources */ = {isa = PBXBuildFile; fileRef = 5F6E63C016B2FA1800CC7AF5 /* main.js */; };
-		5F6E63FD16B2FADA00CC7AF5 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 5F6E63CC16B2FADA00CC7AF5 /* .gitignore */; };
-		5F6E63FE16B2FADA00CC7AF5 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 5F6E63CE16B2FADA00CC7AF5 /* .gitignore */; };
 		5F6E63FF16B2FADA00CC7AF5 /* CCControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E63D016B2FADA00CC7AF5 /* CCControl.m */; };
 		5F6E640016B2FADA00CC7AF5 /* CCControlButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E63D216B2FADA00CC7AF5 /* CCControlButton.m */; };
 		5F6E640116B2FADA00CC7AF5 /* CCControlColourPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6E63D416B2FADA00CC7AF5 /* CCControlColourPicker.m */; };
@@ -1889,8 +1887,6 @@
 				5F6E63A116B2FA1800CC7AF5 /* README.markdown in Resources */,
 				5F6E63BF16B2FA1800CC7AF5 /* grossini_dance_atlas.png in Resources */,
 				5F6E63C116B2FA1800CC7AF5 /* main.js in Resources */,
-				5F6E63FD16B2FADA00CC7AF5 /* .gitignore in Resources */,
-				5F6E63FE16B2FADA00CC7AF5 /* .gitignore in Resources */,
 				5F6E640C16B2FADA00CC7AF5 /* README.md in Resources */,
 				5F6E640E16B2FADA00CC7AF5 /* LICENSE in Resources */,
 				5F6E648016B2FAF100CC7AF5 /* CHANGELOG in Resources */,

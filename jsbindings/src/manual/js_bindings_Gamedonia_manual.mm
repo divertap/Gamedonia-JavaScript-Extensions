@@ -1065,10 +1065,9 @@ JSBool JSB_GamedoniaData_search_query_limit_sort_skip_callback_(JSContext *cx, u
 // Manually generated methods
 JSBool JSB_GamedoniaRequest_hmacsha1_secret__static(JSContext *cx, uint32_t argc, jsval *vp){
     JSB_PRECONDITION3( argc == 1, cx, JS_FALSE, "Invalid number of arguments" );
-#ifdef kGamedoniaGameSecret
-	
-    jsval *argvp = JS_ARGV(cx,vp);
     jsval ret;
+#ifdef kGamedoniaGameSecret
+    jsval *argvp = JS_ARGV(cx,vp);
     NSString *p1_;
     
     JSBool ok = jsval_to_NSString(cx, argvp[0], &p1_);
