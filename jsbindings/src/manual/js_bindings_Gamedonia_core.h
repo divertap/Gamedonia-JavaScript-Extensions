@@ -22,6 +22,9 @@ typedef void (^js_gamedonia_result_with_data_block)(BOOL result, NSObject* p0);
 #define kGamedoniaApiVersion @"v1"
 #define kGamedoniaApiServerURL @"http://api.gamedonia.com"
 
+#define kGamedoniaKeyDevelopersNormal @"e5a7ce9d-b5db-4ea6-8a01-23075ad79f51"
+#define kGamedoniaGameSecret @"0e60d67d40d6181eaa9dae9fd2ef723d"
+
 @interface JSB_NSError : JSB_NSObject
 {
 }

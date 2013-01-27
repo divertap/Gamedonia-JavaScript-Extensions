@@ -593,25 +593,6 @@ JSBool JSB_Gamedonia_data_static(JSContext *cx, uint32_t argc, jsval *vp) {
 	return JS_TRUE;
 }
 
-// Arguments: NSString*, NSString*, NSString*, NSString*
-// Ret value: void (None)
-JSBool JSB_Gamedonia_initialize_secret_apiServerUrl_apiVersion__static(JSContext *cx, uint32_t argc, jsval *vp) {
-	JSB_PRECONDITION3( argc == 4, cx, JS_FALSE, "Invalid number of arguments" );
-	jsval *argvp = JS_ARGV(cx,vp);
-	JSBool ok = JS_TRUE;
-	NSString* arg0; NSString* arg1; NSString* arg2; NSString* arg3; 
-
-	ok &= jsval_to_NSString( cx, *argvp++, &arg0 );
-	ok &= jsval_to_NSString( cx, *argvp++, &arg1 );
-	ok &= jsval_to_NSString( cx, *argvp++, &arg2 );
-	ok &= jsval_to_NSString( cx, *argvp++, &arg3 );
-	JSB_PRECONDITION3(ok, cx, JS_FALSE, "Error processing arguments");
-
-	[Gamedonia initialize:(NSString*)arg0 secret:(NSString*)arg1 apiServerUrl:(NSString*)arg2 apiVersion:(NSString*)arg3  ];
-	JS_SET_RVAL(cx, vp, JSVAL_VOID);
-	return JS_TRUE;
-}
-
 // Arguments: 
 // Ret value: GamedoniaData* (o)
 JSBool JSB_Gamedonia_newData_static(JSContext *cx, uint32_t argc, jsval *vp) {
@@ -673,7 +654,6 @@ void JSB_Gamedonia_createClass(JSContext *cx, JSObject* globalObj, const char* n
 	};
 	static JSFunctionSpec st_funcs[] = {
 		JS_FN("getData", JSB_Gamedonia_data_static, 0, JSPROP_PERMANENT | JSPROP_SHARED | JSPROP_ENUMERATE),
-		JS_FN("initialize", JSB_Gamedonia_initialize_secret_apiServerUrl_apiVersion__static, 4, JSPROP_PERMANENT | JSPROP_SHARED | JSPROP_ENUMERATE),
 		JS_FN("getNewData", JSB_Gamedonia_newData_static, 0, JSPROP_PERMANENT | JSPROP_SHARED | JSPROP_ENUMERATE),
 		JS_FN("getNewUsers", JSB_Gamedonia_newUsers_static, 0, JSPROP_PERMANENT | JSPROP_SHARED | JSPROP_ENUMERATE),
 		JS_FN("getUsers", JSB_Gamedonia_users_static, 0, JSPROP_PERMANENT | JSPROP_SHARED | JSPROP_ENUMERATE),
