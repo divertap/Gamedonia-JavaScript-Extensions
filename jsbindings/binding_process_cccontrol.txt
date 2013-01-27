@@ -1,0 +1,61 @@
+1. Generar descriptor:
+
+gen_bridge_metadata -F complete --no-64-bit -c '-DNDEBUG -I.' *.h -o ../../../jsbindings/configs/gamedonia/Gamedonia.bridgesupport
+
+2. Generar descriptor complementario:
+
+../../../jsbindings/generate_complement.py -o ../../../jsbindings/configs/gamedonia/Gamedonia-complement.txt *.h
+
+3. Crear el fichero de configuración CCControl.jsb.ini
+
+4. Generar los bindings:
+
+../../generate_js_bindings.py -c Gamedonia.jsb.ini
+
+5. Crear fuentes:
+
+js_bindings_Gamedonia_registration.h
+js_bindings_Gamedonia_registration.mm
+js_bindings_Gamedonia_manual.mm
+
+6. Añadir los ficheros autogenerados al proyecto y modificar 
+
+js_bindings_config.h (al final)
+js_bindings_core.mm (en la seccion de imports)
+js_bindings_core.mm (en createRuntime, después de cocos2d)
+7. Si es necesario definir constantes e importar en jsb_constants.js
+
+jsb_constants_gamedonia.js
+
+
+
+
+Ignoring method GamedoniaUsers # changePassword:currentPassword:newPassword:callback:. It should be manually generated
+Ignoring method GamedoniaUsers # createUser:callback:. It should be manually generated
+Ignoring method GamedoniaUsers # getMe:. It should be manually generated
+Ignoring method GamedoniaUsers # getUser:callback:. It should be manually generated
+Ignoring method GamedoniaUsers # loginUserWithEmail:password:callback:. It should be manually generated
+Ignoring method GamedoniaUsers # loginUserWithFacebook:fbAccessToken:callback:. It should be manually generated
+Ignoring method GamedoniaUsers # loginUserWithGameCenterId:callback:. It should be manually generated
+Ignoring method GamedoniaUsers # loginUserWithOpenUDID:. It should be manually generated
+Ignoring method GamedoniaUsers # loginUserWithSessionToken:callback:. It should be manually generated
+Ignoring method GamedoniaUsers # loginUserWithTwitter:twTokenSecret:twToken:callback:. It should be manually generated
+Ignoring method GamedoniaUsers # logoutUser:. It should be manually generated
+Ignoring method GamedoniaUsers # resetPassword:callback:. It should be manually generated
+Ignoring method GamedoniaUsers # restorePassword:newPassword:callback:. It should be manually generated
+Ignoring method GamedoniaUsers # search:limit:sort:skip:callback:. It should be manually generated
+Ignoring method GamedoniaUsers # updateUser:overwrite:callback:. It should be manually generated
+Ignoring method GamedoniaRequest # del:success:failure:. It should be manually generated
+Ignoring method GamedoniaRequest # get:sessionToken:success:failure:. It should be manually generated
+Ignoring method GamedoniaRequest # post:content:auth:sessionToken:gameid:success:failure:. It should be manually generated
+NOT OK: "GamedoniaRequest#post:content:success:failure:" Error: Explicitly ignoring method
+Ignoring method GamedoniaRequest # put:content:auth:sessionToken:gameid:success:failure:. It should be manually generated
+NOT OK: "OpenUDID#valueWithError:" Error: Explicitly ignoring method
+Ignoring method GamedoniaData # create:entity:callback:. It should be manually generated
+Ignoring method GamedoniaData # get:entityId:callback:. It should be manually generated
+Ignoring method GamedoniaData # remove:entityId:callback:. It should be manually generated
+NOT OK: "GamedoniaData#search:query:callback:" Error: Explicitly ignoring method
+NOT OK: "GamedoniaData#search:query:limit:callback:" Error: Explicitly ignoring method
+NOT OK: "GamedoniaData#search:query:limit:sort:callback:" Error: Explicitly ignoring method
+Ignoring method GamedoniaData # search:query:limit:sort:skip:callback:. It should be manually generated
+Ignoring method GamedoniaData # update:entity:overwrite:callback:. It should be manually generated
