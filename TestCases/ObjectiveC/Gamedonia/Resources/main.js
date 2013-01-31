@@ -114,7 +114,7 @@ MainLayer.prototype.onItem1 = function(sender) {
         return;
     }
     else {
-        cc.log('-- Gamedonia Initialize: OK --');
+        cc.log('-- Gamedonia Initialize: OK --!');
         cc.log('');
     }
     
