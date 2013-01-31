@@ -12,7 +12,7 @@
 
 @interface GDUser : GDUserProfile
 
-    @property Credentials *credentials;
+@property Credentials *credentials;
 
 - (NSDictionary *) toDictionary;
 @end
