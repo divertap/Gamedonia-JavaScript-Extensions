@@ -7,12 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Credentials.h"
 #import "GDUserProfile.h"
+#import "Credentials.h"
 
 @interface GDUser : GDUserProfile
 
-@property Credentials *credentials;
+    @property Credentials *credentials;
 
 - (NSDictionary *) toDictionary;
 @end

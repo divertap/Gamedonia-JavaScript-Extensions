@@ -1084,5 +1084,128 @@ JSBool JSB_GamedoniaRequest_hmacsha1_secret__static(JSContext *cx, uint32_t argc
 	return JS_TRUE;
 }
 
+JSBool JSB_GamedoniaPush_registerDeviceToken_(JSContext *cx, uint32_t argc, jsval *vp){
+    JSObject* jsthis = (JSObject *)JS_THIS_OBJECT(cx, vp);
+	JSB_NSObject *proxy = (JSB_NSObject*) jsb_get_proxy_for_jsobject(jsthis);
+	
+	JSB_PRECONDITION( proxy && [proxy realObj], "Invalid Proxy object");
+	JSB_PRECONDITION( argc==1 , "Invalid number of arguments. Expecting 1 arguments" );
+    
+	jsval *argvp = JS_ARGV(cx,vp);
+    
+	JSBool ok = JS_TRUE;
+    NSString *c_;
+    
+    ok &= jsval_to_NSString( cx, argvp[0], &c_ );
+    
+	JSB_PRECONDITION3(ok, cx, JS_FALSE, "Error parsing arguments");
+	
+    CCLOG(@"Registering device %@",c_);
+    NSString *string = [c_ lowercaseString];
+    NSMutableData *data= [NSMutableData new];
+    unsigned char whole_byte;
+    char byte_chars[3] = {'\0','\0','\0'};
+    int i = 0;
+    int length = string.length;
+    while (i < length-1) {
+        char c = [string characterAtIndex:i++];
+        if (c < '0' || (c > '9' && c < 'a') || c > 'f')
+            continue;
+        byte_chars[0] = c;
+        byte_chars[1] = [string characterAtIndex:i++];
+        whole_byte = strtol(byte_chars, NULL, 16);
+        [data appendBytes:&whole_byte length:1];
+        
+    }
+    
+	GamedoniaPush *d = (GamedoniaPush*) [proxy realObj];
+    [d registerDeviceToken:data];
+    
+	JS_SET_RVAL(cx, vp, JSVAL_VOID);
+    
+    return JS_TRUE;
+}
+
+JSBool JSB_GamedoniaDevice_registerDevice_callback_(JSContext *cx, uint32_t argc, jsval *vp){
+    JSObject* jsthis = (JSObject *)JS_THIS_OBJECT(cx, vp);
+	JSB_NSObject *proxy = (JSB_NSObject*) jsb_get_proxy_for_jsobject(jsthis);
+	
+	JSB_PRECONDITION( proxy && [proxy realObj], "Invalid Proxy object");
+	JSB_PRECONDITION( argc==2 || argc ==3, "Invalid number of arguments. Expecting 2 or 3 arguments" );
+    
+	jsval *argvp = JS_ARGV(cx,vp);
+	js_gamedonia_result_block js_func;
+    JSObject *js_this = NULL;
+    JSObject *js_profile = NULL;
+    
+	JSBool ok = JS_TRUE;
+    
+    if(argc==3) {
+		ok &= JS_ValueToObject(cx, argvp[2], &js_this);
+        ok &= jsb_set_reserved_slot(jsthis, 1, argvp[2] );
+	}
+    
+    ok &= JS_ValueToObject(cx, argvp[0], &js_profile);
+	ok &= jsval_to_gamedonia_result_block_1( cx, argvp[1], js_this, &js_func );
+    ok &= jsb_set_reserved_slot(jsthis, 0, argvp[1] );
+    
+	JSB_PRECONDITION3(ok, cx, JS_FALSE, "Error parsing arguments");
+	
+    JSB_NSObject *profileProxy = (JSB_NSObject*) jsb_get_proxy_for_jsobject(js_profile);
+    GDDeviceProfile *profile = [profileProxy realObj];
+	
+    CCLOG(@"Profile %@",profile);
+    
+	GamedoniaDevice *d = (GamedoniaDevice*) [proxy realObj];
+    [d registerDevice:profile callback:js_func];
+    
+	JS_SET_RVAL(cx, vp, JSVAL_VOID);
+    
+    return JS_TRUE;
+}
+
+// Manually generated methods
+JSBool JSB_GamedoniaScript_run_parameters_callback_(JSContext *cx, uint32_t argc, jsval *vp){
+    JSObject* jsthis = (JSObject *)JS_THIS_OBJECT(cx, vp);
+	JSB_NSObject *proxy = (JSB_NSObject*) jsb_get_proxy_for_jsobject(jsthis);
+	
+	JSB_PRECONDITION( proxy && [proxy realObj], "Invalid Proxy object");
+	JSB_PRECONDITION( argc==3 || argc ==4, "Invalid number of arguments. Expecting 3 or 4 arguments" );
+    
+	jsval *argvp = JS_ARGV(cx,vp);
+	js_gamedonia_result_with_data_block js_func;
+    JSObject *js_data = NULL;
+    JSObject *js_this = NULL;
+    
+	JSBool ok = JS_TRUE;
+    NSString *c_;
+    NSDictionary *params_;
+    
+    if(argc==4) {
+		ok &= JS_ValueToObject(cx, argvp[3], &js_this);
+        ok &= jsb_set_reserved_slot(jsthis, 1, argvp[3] );
+	}
+    
+    ok &= jsval_to_NSString( cx, argvp[0], &c_ );
+    ok &= JS_ValueToObject(cx, argvp[1], &js_data);
+    
+    JSB_NSObject *userProxy = (JSB_NSObject*) jsb_get_proxy_for_jsobject(js_data);
+    params_ = [userProxy realObj];
+    
+	ok &= jsval_to_gamedonia_result_block_2( cx, argvp[2], js_this, &js_func );
+    ok &= jsb_set_reserved_slot(jsthis, 0, argvp[2] );
+    
+	JSB_PRECONDITION3(ok, cx, JS_FALSE, "Error parsing arguments");
+	
+    CCLOG(@"Run script with params %@ %@",c_,params_);
+    
+	GamedoniaScript *d = (GamedoniaScript*) [proxy realObj];
+    [d run:c_ parameters:params_ callback:js_func];
+    
+	JS_SET_RVAL(cx, vp, JSVAL_VOID);
+    
+    return JS_TRUE;
+}
+
 #endif // JSB_INCLUDE_GAMEDONIA
 

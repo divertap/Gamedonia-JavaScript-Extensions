@@ -26,6 +26,8 @@ void jsb_register_Gamedonia( JSContext *_cx, JSObject *object) {
     JS_DefineFunction(_cx, gamedonia, "createUserWithEmailAndPassword", JSBGamedoniaCore_createUserWithEmailAndPassword, 2, JSPROP_READONLY | JSPROP_PERMANENT | JSPROP_ENUMERATE );
     JS_DefineFunction(_cx, gamedonia, "createUserWithOpenUDID", JSBGamedoniaCore_createUserWithOpenUDID, 1, JSPROP_READONLY | JSPROP_PERMANENT | JSPROP_ENUMERATE );
     JS_DefineFunction(_cx, gamedonia, "createUserWithGameCenterId", JSBGamedoniaCore_createUserWithGameCenterId, 1, JSPROP_READONLY | JSPROP_PERMANENT | JSPROP_ENUMERATE );
+    JS_DefineFunction(_cx, gamedonia, "createUserWithFacebookId", JSBGamedoniaCore_createUserWithFacebookId, 2, JSPROP_READONLY | JSPROP_PERMANENT | JSPROP_ENUMERATE );
+    JS_DefineFunction(_cx, gamedonia, "createDevice", JSBGamedoniaCore_createGDDeviceProfile, 0, JSPROP_READONLY | JSPROP_PERMANENT | JSPROP_ENUMERATE );
     
     // Supported types
     // NSMutableDictionary (limited dictionary functionality)

@@ -16,7 +16,17 @@
 
 @end
 
-@interface GamedoniaUsers : NSObject
+@protocol GamedoniaUsersEventListener
+
+@required
+- (void) onLoginSuccess;
+
+@end
+
+@interface GamedoniaUsers : NSObject {
+    
+    NSMutableArray * _listeners;
+}
 
 @property GDUserProfile *me;
 @property GDSessionToken* session_token;
@@ -37,6 +47,16 @@
 - (void) changePassword:(NSString *)email currentPassword:(NSString *)currentPassword newPassword:(NSString *)newPassword callback:(void (^)(BOOL success))callback;
 - (void) resetPassword:(NSString *)email callback:(void (^)(BOOL success))callback;
 - (void) restorePassword:(NSString *)restoreToken newPassword:(NSString *)newPassword callback:(void (^)(BOOL success))callback;
+- (void) search:(NSString *)query limit:(int)limit callback:(void (^)(BOOL success, NSArray *list))callback;
+- (void) search:(NSString *)query limit:(int)limit sort:(NSString *)sort callback:(void (^)(BOOL success, NSArray *list))callback;
 - (void) search:(NSString *)query limit:(int)limit sort:(NSString *)sort skip:(int)skip callback:(void (^)(BOOL success, NSArray *list))callback;
+
+
+/*
+ *  Events Listeners
+ */
+
+- (void) addEventListener:(NSObject<GamedoniaUsersEventListener> *)listener;
+- (void) removeEventListener:(NSObject<GamedoniaUsersEventListener> *)listener;
 
 @end

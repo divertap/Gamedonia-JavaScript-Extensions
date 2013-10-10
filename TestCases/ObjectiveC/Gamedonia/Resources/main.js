@@ -118,7 +118,7 @@ MainLayer.prototype.onItem1 = function(sender) {
         cc.log('');
     }
     
-    /*
+    
     cc.log('----------------------');
     cc.log('-- Users test cases --');
     cc.log('----------------------');
@@ -139,14 +139,14 @@ MainLayer.prototype.onItem1 = function(sender) {
                         this.restorePasswordWithCallbackTestCase,
                         this.searchWithCallbackTestCase,
                         this.logoutWithCallbackTestCase]);
-    */
+    
 
     cc.log('----------------------');
     cc.log('-- Data test cases --');
     cc.log('----------------------');
     cc.log('');
 
-
+/*
     this.executeChain([this.createUserWithEmailTestCase,
                         this.loginWithEmailTestCase,
                         this.loginWithSessionTokenTestCase,
@@ -156,7 +156,7 @@ MainLayer.prototype.onItem1 = function(sender) {
                         this.updateEntityWithCallbackTestCase,
                         this.removeEntityWithCallbackTestCase,
                         this.logoutWithCallbackTestCase]);
-
+*/
     /*
     cc.log('------------------------');
     cc.log('-- Request test cases --');

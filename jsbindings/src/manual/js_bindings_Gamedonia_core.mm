@@ -175,7 +175,7 @@ JSBool JSB_NSDictionary_constructor(JSContext *cx, uint32_t argc, jsval *vp)
 }
 
 // Methods
-JSBool JSB_NSDictionary_setValue_forKey(JSContext *cx, uint32_t argc, jsval *vp) {
+JSBool JSB_NSDictionary_setString_forKey(JSContext *cx, uint32_t argc, jsval *vp) {
 	
 	JSObject* obj = (JSObject *)JS_THIS_OBJECT(cx, vp);
 	JSB_NSObject *proxy = (JSB_NSObject*)jsb_get_proxy_for_jsobject(obj);
@@ -200,6 +200,140 @@ JSBool JSB_NSDictionary_setValue_forKey(JSContext *cx, uint32_t argc, jsval *vp)
 	return JS_TRUE;
 }
 
+JSBool jsval_to_NSStringArray( JSContext *cx, jsval vp, NSArray**ret )
+{
+	// Parsing sequence
+	JSObject *jsobj;
+	JSBool ok = JS_ValueToObject( cx, vp, &jsobj );
+	JSB_PRECONDITION3( ok, cx, JS_FALSE, "Error converting value to object");
+	
+	JSB_PRECONDITION3( jsobj && JS_IsArrayObject( cx, jsobj),  cx, JS_FALSE, "Object must be an array");
+    
+	
+	uint32_t len;
+	JS_GetArrayLength(cx, jsobj,&len);
+	NSMutableArray *array = [NSMutableArray arrayWithCapacity:len];
+	for( uint32_t i=0; i< len;i++ ) {
+		jsval valarg;
+		JS_GetElement(cx, jsobj, i, &valarg);
+		
+		// XXX: forcing them to be objects, but they could also be NSString, NSDictionary or NSArray
+		NSString *real_obj;
+		ok = jsval_is_NSString( cx, valarg, &real_obj );
+		JSB_PRECONDITION3( ok, cx, JS_FALSE, "Error converting value to nsstring");
+		
+		[array addObject:real_obj];
+	}
+	*ret = array;
+    
+	return JS_TRUE;
+}
+
+JSBool JSB_NSDictionary_setArray_forKey(JSContext *cx, uint32_t argc, jsval *vp) {
+	
+	JSObject* obj = (JSObject *)JS_THIS_OBJECT(cx, vp);
+	JSB_NSObject *proxy = (JSB_NSObject*)jsb_get_proxy_for_jsobject(obj);
+	NSCAssert( proxy && [proxy realObj], @"Object already initialzied. error");
+	
+	JSB_PRECONDITION( argc == 2, "Invalid number of arguments" );
+	
+	NSMutableDictionary* real = (NSMutableDictionary*) [proxy realObj];
+	
+    jsval *argvp = JS_ARGV(cx,vp);
+    JSBool ok = JS_TRUE;
+    
+    NSArray *object;
+    NSString *key;
+    
+    ok &= jsval_to_NSStringArray(cx, argvp[0], &object);
+    ok &= jsval_to_NSString(cx, argvp[1], &key);
+    JSB_PRECONDITION3(ok, cx, JS_FALSE, "Error processing arguments");
+    
+    [real setObject:object forKey:key];
+	
+	return JS_TRUE;
+}
+
+JSBool JSB_NSDictionary_setInteger_forKey(JSContext *cx, uint32_t argc, jsval *vp) {
+	
+	JSObject* obj = (JSObject *)JS_THIS_OBJECT(cx, vp);
+	JSB_NSObject *proxy = (JSB_NSObject*)jsb_get_proxy_for_jsobject(obj);
+	NSCAssert( proxy && [proxy realObj], @"Object already initialzied. error");
+	
+	JSB_PRECONDITION( argc == 2, "Invalid number of arguments" );
+	
+	NSMutableDictionary* real = (NSMutableDictionary*) [proxy realObj];
+	
+    jsval *argvp = JS_ARGV(cx,vp);
+    JSBool ok = JS_TRUE;
+    
+    int object;
+    NSString *key;
+    
+    ok &= jsval_to_int(cx, argvp[0], &object);
+    ok &= jsval_to_NSString(cx, argvp[1], &key);
+    JSB_PRECONDITION3(ok, cx, JS_FALSE, "Error processing arguments");
+    
+    [real setObject:@(object) forKey:key];
+	
+	return JS_TRUE;
+}
+
+JSBool JSB_NSDictionary_setDictionary_forKey(JSContext *cx, uint32_t argc, jsval *vp) {
+	
+	JSObject* obj = (JSObject *)JS_THIS_OBJECT(cx, vp);
+	JSB_NSObject *proxy = (JSB_NSObject*)jsb_get_proxy_for_jsobject(obj);
+	NSCAssert( proxy && [proxy realObj], @"Object already initialzied. error");
+	
+	JSB_PRECONDITION( argc == 2, "Invalid number of arguments" );
+	
+	NSMutableDictionary* real = (NSMutableDictionary*) [proxy realObj];
+	
+    jsval *argvp = JS_ARGV(cx,vp);
+    JSBool ok = JS_TRUE;
+    JSObject *js_dict;
+    
+    NSString *key;
+    
+    ok &= JS_ValueToObject(cx, argvp[0], &js_dict);
+    ok &= jsval_to_NSString(cx, argvp[1], &key);
+    
+	JSB_PRECONDITION3(ok, cx, JS_FALSE, "Error parsing arguments");
+	
+    JSB_NSObject *dictProxy = (JSB_NSObject*) jsb_get_proxy_for_jsobject(js_dict);
+    NSDictionary *dict = [dictProxy realObj];
+    
+    [real setObject:dict forKey:key];
+	
+	return JS_TRUE;
+}
+
+JSBool JSB_NSDictionary_setObjects_forKey(JSContext *cx, uint32_t argc, jsval *vp) {
+	
+	JSObject* obj = (JSObject *)JS_THIS_OBJECT(cx, vp);
+	JSB_NSObject *proxy = (JSB_NSObject*)jsb_get_proxy_for_jsobject(obj);
+	NSCAssert( proxy && [proxy realObj], @"Object already initialzied. error");
+	
+	JSB_PRECONDITION( argc == 2, "Invalid number of arguments" );
+	
+	NSMutableDictionary* real = (NSMutableDictionary*) [proxy realObj];
+	
+    jsval *argvp = JS_ARGV(cx,vp);
+    JSBool ok = JS_TRUE;
+    
+    NSString *key;
+    NSArray *arr;
+    
+    ok &= jsval_to_NSArray(cx, argvp[0], &arr);
+    ok &= jsval_to_NSString(cx, argvp[1], &key);
+    
+	JSB_PRECONDITION3(ok, cx, JS_FALSE, "Error parsing arguments");
+    
+    [real setObject:arr forKey:key];
+	
+	return JS_TRUE;
+}
+
 JSBool JSB_NSDictionary_getValue_forKey(JSContext *cx, uint32_t argc, jsval *vp) {
 	
 	JSObject* obj = (JSObject *)JS_THIS_OBJECT(cx, vp);
@@ -219,7 +353,7 @@ JSBool JSB_NSDictionary_getValue_forKey(JSContext *cx, uint32_t argc, jsval *vp)
     JSB_PRECONDITION3(ok, cx, JS_FALSE, "Error processing arguments");
     
     NSString *val = [real objectForKey:key];
-	JS_SET_RVAL(cx, vp, NSString_to_jsval(cx, val));
+	JS_SET_RVAL(cx, vp, unknown_to_jsval(cx, val));
     
 	return JS_TRUE;
 }
@@ -247,6 +381,33 @@ JSBool JSB_NSDictionary_create(JSContext *cx, uint32_t argc, jsval *vp) {
 	return JS_TRUE;
 }
 
+JSBool JSB_NSDictionary_fromJSON(JSContext *cx, uint32_t argc, jsval *vp) {
+	JSB_PRECONDITION3( argc == 1, cx, JS_FALSE, "Invalid number of arguments" );
+    jsval *argvp = JS_ARGV(cx,vp);
+    
+    NSString *data_;
+    JSBool ok = JS_TRUE;
+    ok &= jsval_to_NSString(cx, argvp[0], &data_);
+    JSB_PRECONDITION3(ok, cx, JS_FALSE, "Error processing arguments");
+    
+    data_ = [data_ stringByReplacingOccurrencesOfString:@"'" withString:@"\""];
+    
+    NSData *data = [data_ dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *error = nil;
+    NSDictionary *ret_val = [NSJSONSerialization JSONObjectWithData:data
+                                                            options:NSJSONReadingAllowFragments
+                                                              error:&error];
+    if (error){
+        ok = JS_FALSE;
+        NSLog(@"Error al leer json: %@", [error description]);
+        JSB_PRECONDITION3(ok, cx, JS_FALSE, "Error processing arguments");
+    }
+    
+	JS_SET_RVAL(cx, vp, NSDictionary_to_jsval(cx, ret_val));
+    
+	return JS_TRUE;
+}
+
 void JSB_NSDictionary_createClass(JSContext* cx, JSObject* globalObj, const char *name )
 {
 	JSB_NSDictionary_class = (JSClass *)calloc(1, sizeof(JSClass));
@@ -267,13 +428,19 @@ void JSB_NSDictionary_createClass(JSContext* cx, JSObject* globalObj, const char
 	
 	
 	static JSFunctionSpec funcs[] = {
-		JS_FN("setValueForKey", JSB_NSDictionary_setValue_forKey, 2, JSPROP_PERMANENT | JSPROP_SHARED | JSPROP_ENUMERATE),
+        JS_FN("setValueForKey", JSB_NSDictionary_setString_forKey, 2, JSPROP_PERMANENT | JSPROP_SHARED | JSPROP_ENUMERATE),
+		JS_FN("setStringForKey", JSB_NSDictionary_setString_forKey, 2, JSPROP_PERMANENT | JSPROP_SHARED | JSPROP_ENUMERATE),
+        JS_FN("setArrayForKey", JSB_NSDictionary_setArray_forKey, 2, JSPROP_PERMANENT | JSPROP_SHARED | JSPROP_ENUMERATE),
+        JS_FN("setDictionaryForKey", JSB_NSDictionary_setDictionary_forKey, 2, JSPROP_PERMANENT | JSPROP_SHARED | JSPROP_ENUMERATE),
+        JS_FN("setIntegerForKey", JSB_NSDictionary_setInteger_forKey, 2, JSPROP_PERMANENT | JSPROP_SHARED | JSPROP_ENUMERATE),
+        JS_FN("setObjectsForKey", JSB_NSDictionary_setObjects_forKey, 2, JSPROP_PERMANENT | JSPROP_SHARED | JSPROP_ENUMERATE),
 		JS_FN("getValueForKey", JSB_NSDictionary_getValue_forKey, 1, JSPROP_PERMANENT | JSPROP_SHARED | JSPROP_ENUMERATE),
 		JS_FS_END
 	};
 	
 	static JSFunctionSpec st_funcs[] = {
         JS_FN("create", JSB_NSDictionary_create, 0, JSPROP_PERMANENT | JSPROP_SHARED | JSPROP_ENUMERATE),
+        JS_FN("fromJSON", JSB_NSDictionary_fromJSON, 1, JSPROP_PERMANENT | JSPROP_SHARED | JSPROP_ENUMERATE),
 		JS_FS_END
 	};
 	
@@ -315,10 +482,13 @@ JSBool JSBGamedoniaCore_initGamedonia(JSContext *cx, uint32_t argc, jsval *vp)
     JSBool ok = JS_ValueToInt32(cx, argvp[0], &key_type);
     JSB_PRECONDITION3(ok, cx, JS_FALSE, "Error processing arguments");
     
+    GDOptions *options = [[[GDOptions alloc] init] autorelease];
+    [options setPush:true];
+    
     switch (key_type) {
         case kGamedoniaKeyTypeDevelopersNormal:
 #ifdef kGamedoniaKeyDevelopersNormal
-            [Gamedonia initialize:kGamedoniaKeyDevelopersNormal secret:kGamedoniaGameSecret apiServerUrl:kGamedoniaApiServerURL apiVersion:kGamedoniaApiVersion];
+            [Gamedonia initializeWithOptions:kGamedoniaKeyDevelopersNormal secret:kGamedoniaGameSecret apiServerUrl:kGamedoniaApiServerURL apiVersion:kGamedoniaApiVersion options:options];
 #else
             b = JS_FALSE;
             fprintf(stderr, "%s\n", "Developers Normal Key specified but not defined. Use: #define kGamedoniaKeyDevelopersNormal @\"XXXXXX\"\n");
@@ -326,7 +496,7 @@ JSBool JSBGamedoniaCore_initGamedonia(JSContext *cx, uint32_t argc, jsval *vp)
             break;
         case kGamedoniaKeyTypeDevelopersMaster:
 #ifdef kGamedoniaKeyDevelopersMaster
-            [Gamedonia initialize:kGamedoniaKeyDevelopersMaster secret:kGamedoniaGameSecret apiServerUrl:kGamedoniaApiServerURL apiVersion:kGamedoniaApiVersion];
+            [Gamedonia initializeWithOptions:kGamedoniaKeyDevelopersMaster secret:kGamedoniaGameSecret apiServerUrl:kGamedoniaApiServerURL apiVersion:kGamedoniaApiVersion options: options];
 #else
             b = JS_FALSE;
             fprintf(stderr, "%s\n", "Developers Master Key specified but not defined. Use: #define kGamedoniaKeyDevelopersMaster @\"XXXXXX\"\n");
@@ -334,7 +504,7 @@ JSBool JSBGamedoniaCore_initGamedonia(JSContext *cx, uint32_t argc, jsval *vp)
             break;
         case kGamedoniaKeyTypeProductionNormal:
 #ifdef kGamedoniaKeyProductionNormal
-            [Gamedonia initialize:kGamedoniaKeyProductionNormal secret:kGamedoniaGameSecret apiServerUrl:kGamedoniaApiServerURL apiVersion:kGamedoniaApiVersion];
+            [Gamedonia initializeWithOptions:kGamedoniaKeyProductionNormal secret:kGamedoniaGameSecret apiServerUrl:kGamedoniaApiServerURL apiVersion:kGamedoniaApiVersion options: options];
 #else
             b = JS_FALSE;
             fprintf(stderr, "%s\n", "Production Normal Key specified but not defined. Use: #define kGamedoniaKeyProductionNormal @\"XXXXXX\"\n");
@@ -342,7 +512,7 @@ JSBool JSBGamedoniaCore_initGamedonia(JSContext *cx, uint32_t argc, jsval *vp)
             break;
         case kGamedoniaKeyTypeProductionMaster:
 #ifdef kGamedoniaKeyProductionMaster
-            [Gamedonia initialize:kGamedoniaKeyProductionMaster secret:kGamedoniaGameSecret apiServerUrl:kGamedoniaApiServerURL apiVersion:kGamedoniaApiVersion];
+            [Gamedonia initializeWithOptions:kGamedoniaKeyProductionMaster secret:kGamedoniaGameSecret apiServerUrl:kGamedoniaApiServerURL apiVersion:kGamedoniaApiVersion options: options];
 #else
             b = JS_FALSE;
             fprintf(stderr, "%s\n", "Production Master Key specified but not defined. Use: #define kGamedoniaKeyProductionMaster @\"XXXXXX\"\n");
@@ -475,6 +645,31 @@ JSBool JSBGamedoniaCore_createUserWithOpenUDID(JSContext *cx, uint32_t argc, jsv
 	return JS_TRUE;
 };
 
+JSBool JSBGamedoniaCore_createUserWithFacebookId(JSContext *cx, uint32_t argc, jsval *vp)
+{
+    JSB_PRECONDITION3( argc == 2, cx, JS_FALSE, "Invalid number of arguments" );
+    jsval *argvp = JS_ARGV(cx,vp);
+    
+    NSString *p1_,*p2_;
+    
+    JSBool ok = JS_TRUE;
+    ok &= jsval_to_NSString(cx, argvp[0], &p1_);
+    ok &= jsval_to_NSString(cx, argvp[1], &p2_);
+    JSB_PRECONDITION3(ok, cx, JS_FALSE, "Error processing arguments");
+    
+    GDUser* ret_val;
+	ret_val = [[[GDUser alloc] init]autorelease];
+    Credentials *c = [[[Credentials alloc] init] autorelease];
+	[ret_val setCredentials:c];
+    
+    [c setFb_uid:p1_];
+    [c setFb_access_token:p2_];
+    
+	JSObject *jsobj = get_or_create_jsobject_from_realobj( cx, ret_val );
+	JS_SET_RVAL(cx, vp, OBJECT_TO_JSVAL(jsobj));
+	return JS_TRUE;
+};
+
 JSBool JSBGamedoniaCore_createUserWithGameCenterId(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JSB_PRECONDITION3( argc == 1, cx, JS_FALSE, "Invalid number of arguments" );
@@ -493,6 +688,18 @@ JSBool JSBGamedoniaCore_createUserWithGameCenterId(JSContext *cx, uint32_t argc,
     
     [c setGamecenter_id:p1_];
     
+	JSObject *jsobj = get_or_create_jsobject_from_realobj( cx, ret_val );
+	JS_SET_RVAL(cx, vp, OBJECT_TO_JSVAL(jsobj));
+	return JS_TRUE;
+};
+
+JSBool JSBGamedoniaCore_createGDDeviceProfile(JSContext *cx, uint32_t argc, jsval *vp)
+{
+    JSB_PRECONDITION3( argc == 0, cx, JS_FALSE, "Invalid number of arguments" );
+    
+    GDDeviceProfile* ret_val;
+	ret_val = [[[GDDeviceProfile alloc] init]autorelease];
+
 	JSObject *jsobj = get_or_create_jsobject_from_realobj( cx, ret_val );
 	JS_SET_RVAL(cx, vp, OBJECT_TO_JSVAL(jsobj));
 	return JS_TRUE;
@@ -529,18 +736,7 @@ JSBool jsval_to_gamedonia_result_block_2( JSContext *cx, jsval vp, JSObject *jst
         jsval rval;
         jsval args[2];
         args[0] = BOOLEAN_TO_JSVAL((JSBool)arg);
-        if( [p0 isKindOfClass:[NSArray class]] ) {
-            NSArray *array = (NSArray*)p0;
-            JSObject *jsobj = JS_NewArrayObject(cx, 0, NULL);
-            uint32_t index = 0;
-            for( id obj in array ) {
-                jsval val = NSObject_to_jsval(cx, obj);
-                JS_SetElement(cx, jsobj, index++, &val);
-            }
-            args[1] = OBJECT_TO_JSVAL(jsobj);
-        } else {
-            args[1] = NSObject_to_jsval(cx, p0);
-        }
+        args[1] = unknown_to_jsval(cx, p0);
         
         JSBool ok = JS_CallFunctionValue(cx, jsthis, vp, 2, args, &rval);
         JSB_PRECONDITION2(ok, cx, , "Error calling gamedonia result callback (2)");

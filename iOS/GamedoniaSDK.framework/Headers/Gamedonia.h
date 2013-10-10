@@ -10,11 +10,16 @@
 #import "GamedoniaRequest.h"
 #import "GamedoniaUsers.h"
 #import "GamedoniaData.h"
+#import "GamedoniaDevice.h"
+#import "GamedoniaPush.h"
+#import "GamedoniaScript.h"
+#import "GDOptions.h"
 
 @interface Gamedonia : NSObject
 
 
 + (void)initialize: (NSString *) apiKey secret:(NSString *)secret apiServerUrl:(NSString *)apiServerUrl apiVersion:(NSString *)apiVersion;
++ (void)initializeWithOptions: (NSString *) apiKey secret:(NSString *)secret apiServerUrl:(NSString *)apiServerUrl apiVersion:(NSString *)apiVersion options:(GDOptions *)options;
 
 /// ---------------------------------
 /// @name Accessing Clients
@@ -45,5 +50,47 @@
  Returns a new instance of GamedoniaUsers.
  */
 + (GamedoniaData *)newData;
+
+/**
+ Returns a globally shared instance of GamedoniaData.
+ 
+ For most simple cases, this is all you will need; if you need your own unique instance,
+ you should use newUsers instead.
+ */
++ (GamedoniaDevice *)device;
+
+/**
+ Returns a new instance of GamedoniaUsers.
+ */
++ (GamedoniaDevice *)newDevice;
+
+/**
+ Returns a globally shared instance of GamedoniaData.
+ 
+ For most simple cases, this is all you will need; if you need your own unique instance,
+ you should use newUsers instead.
+ */
++ (GamedoniaPush *)push;
+
+/**
+ Returns a new instance of GamedoniaUsers.
+ */
++ (GamedoniaPush *)newPush;
+
+/**
+ Returns a globally shared instance of GamedoniaData.
+ 
+ For most simple cases, this is all you will need; if you need your own unique instance,
+ you should use newUsers instead.
+ */
++ (GamedoniaScript *)script;
+
+/**
+ Returns a new instance of GamedoniaUsers.
+ */
++ (GamedoniaScript *)newScript;
+
+
++ (BOOL)isDebug;
 
 @end
