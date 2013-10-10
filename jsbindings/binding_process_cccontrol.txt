@@ -1,4 +1,4 @@
-1. Generar descriptor:
+1. Generar descriptor: 
 
 gen_bridge_metadata -F complete --no-64-bit -c '-DNDEBUG -I.' *.h -o ../../../jsbindings/configs/gamedonia/Gamedonia.bridgesupport
 
