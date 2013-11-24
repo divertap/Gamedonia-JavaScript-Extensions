@@ -52,9 +52,9 @@ class ObjC(object):
             l = f.readlines()
 
             # regexp based on Objective Pascal parser ( http://www.objectivepascal.com/ )
-            regex_objc_class = r"^\s*@interface\s+([\S]+)\s*:\s*([\w]+)\s*(<.*>)*"
-            regex_objc_class_extension = r"^\s*@interface\s+([\S]+)\s*\(\s*([\w]+)\s*\)\s*"
-            regex_objc_property_attributes = r"^@property\s*\(([^)]*)\)\s*([a-zA-Z_0-9]+)\s*(<.*>)?(\bint\b|\blong\b|\bchar\b)?(\*)*\s*(.*)\s*;"
+            regex_objc_class = r"^[\S]*\s*@interface\s+([\S]+)\s*:\s*([\w]+)\s*(<.*>)*"
+            regex_objc_class_extension = r"^[\S]*\s*@interface\s+([\S]+)\s*\(\s*([\w]+)\s*\)\s*"
+            regex_objc_property_attributes = r"^@property\s*\(([^)]*)\)\s*([a-zA-Z_0-9]+)\s*(<.*>)?(\bint\b|\blong\b|\bchar\b)?(\*)*\s*(\w*)\s*(.*);"
             regex_obj_end = r"^\s*@end\s*$"
 
             current_class = None

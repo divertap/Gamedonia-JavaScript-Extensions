@@ -13,8 +13,6 @@
 #import "GamedoniaDevice.h"
 #import "GamedoniaPush.h"
 #import "GamedoniaScript.h"
-#import "GamedoniaInAppPurchases.h"
-#import "GamedoniaFiles.h"
 #import "GDOptions.h"
 
 @interface Gamedonia : NSObject
@@ -92,34 +90,7 @@
  */
 + (GamedoniaScript *)newScript;
 
-/**
-Returns a globally shared instance of GamedoniaData.
-
-For most simple cases, this is all you will need; if you need your own unique instance,
-you should use newUsers instead.
-*/
-+ (GamedoniaInAppPurchases *)purchase;
-
-/**
- Returns a new instance of GamedoniaUsers.
- */
-+ (GamedoniaInAppPurchases *)newPurchase;
-
-/**
- Returns a globally shared instance of GamedoniaFiles.
- 
- For most simple cases, this is all you will need; if you need your own unique instance,
- you should use newUsers instead.
- */
-+ (GamedoniaFiles *)file;
-
-/**
- Returns a new instance of GamedoniaFiles.
- */
-+ (GamedoniaFiles *)newFile;
 
 + (BOOL)isDebug;
-
-+ (NSOperationQueue *)operationsQueue;
 
 @end

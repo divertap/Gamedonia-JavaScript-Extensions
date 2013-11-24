@@ -188,7 +188,9 @@ JSBool JSB_GamedoniaUsers_loginUserWithFacebook_fbAccessToken_callback_(JSContex
     ok &= jsb_set_reserved_slot(jsthis, 0, argvp[2] );
     
 	JSB_PRECONDITION3(ok, cx, JS_FALSE, "Error parsing arguments");
-	
+	if( p_.length == 0 ) {
+        p_ = @"???";
+    }
     CCLOG(@"Login FB %@ %@",e_,p_);
     
 	GamedoniaUsers *users = (GamedoniaUsers*) [proxy realObj];
@@ -635,14 +637,14 @@ JSBool JSB_GamedoniaRequest_post_content_auth_sessionToken_gameid_success_failur
 }
 JSBool JSB_GamedoniaRequest_sign_secret_data_contentType_date_requestMethod_path__static(JSContext *cx, uint32_t argc, jsval *vp){
 	JSB_PRECONDITION( argc==4 || argc ==6, "Invalid number of arguments. Expecting 4 or 6 arguments" );
-    NSString *ret_;
+    NSString *ret_ = nil;
 #ifdef kGamedoniaGameSecret
 	jsval *argvp = JS_ARGV(cx,vp);
     
 	JSBool ok = JS_TRUE;
     int p1_;
     NSString *p2_,*p3_,*p4_,*p5_,*p6_;
-    NSString *key_;
+    NSString *key_ = nil;
     
     ok &= jsval_to_int( cx, argvp[0], &p1_ );
     ok &= jsval_to_NSString( cx, argvp[1], &p2_ );

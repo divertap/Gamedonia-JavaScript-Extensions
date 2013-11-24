@@ -1,12 +1,12 @@
 1. Generar descriptor: 
 
-gen_bridge_metadata -F complete --no-64-bit -c '-DNDEBUG -I.' *.h -o ../../../jsbindings/configs/gamedonia/Gamedonia.bridgesupport
+gen_bridge_metadata -F complete --no-64-bit -c '-DNDEBUG -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/StoreKit.framework/Headers/' *.h -o ../../../jsbindings/configs/gamedonia/Gamedonia.bridgesupport
 
 2. Generar descriptor complementario:
 
-../../../jsbindings/generate_complement.py -o ../../../jsbindings/configs/gamedonia/Gamedonia-complement.txt *.h
+../../../jsbindings/generate_complement.py -o ../../../jsbindings/configs/gamedonia/Gamedonia-complement.txt /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/StoreKit.framework/Headers/SKProduct.h *.h
 
-3. Crear el fichero de configuración CCControl.jsb.ini
+3. Crear el fichero de configuración Gamedonia.jsb.ini
 
 4. Generar los bindings:
 

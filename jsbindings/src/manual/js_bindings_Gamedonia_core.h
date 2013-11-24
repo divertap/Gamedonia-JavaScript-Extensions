@@ -69,8 +69,8 @@ extern "C" {
     // Factory method
     JSBool JSBGamedoniaCore_createUserWithEmailAndPassword(JSContext *cx, uint32_t argc, jsval *vp);
     JSBool JSBGamedoniaCore_createUserWithOpenUDID(JSContext *cx, uint32_t argc, jsval *vp);
-    JSBool JSBGamedoniaCore_createUserWithFacebookId(JSContext *cx, uint32_t argc, jsval *vp);
     JSBool JSBGamedoniaCore_createUserWithGameCenterId(JSContext *cx, uint32_t argc, jsval *vp);
+    JSBool JSBGamedoniaCore_createUserWithFacebookId(JSContext *cx, uint32_t argc, jsval *vp);
     JSBool JSBGamedoniaCore_createGDDeviceProfile(JSContext *cx, uint32_t argc, jsval *vp);
 
 #ifdef __cplusplus

@@ -43,7 +43,7 @@
 - (void) logoutUser:(void (^)(BOOL success))callback;
 - (void) getUser:(NSString *)userId callback:(void (^)(BOOL success, GDUserProfile *userProfile))callback;
 - (void) getMe:(void (^)(BOOL success, GDUserProfile *userProfile))callback;
-- (void) updateUser:(NSDictionary *)profile overwrite:(BOOL)overwrite callback:(void (^)(BOOL success, GDUserProfile *userProfile))callback;
+- (void) updateUser:(NSDictionary *)profile overwrite:(BOOL)overwrite callback:(void (^)(BOOL success))callback;
 - (void) changePassword:(NSString *)email currentPassword:(NSString *)currentPassword newPassword:(NSString *)newPassword callback:(void (^)(BOOL success))callback;
 - (void) resetPassword:(NSString *)email callback:(void (^)(BOOL success))callback;
 - (void) restorePassword:(NSString *)restoreToken newPassword:(NSString *)newPassword callback:(void (^)(BOOL success))callback;

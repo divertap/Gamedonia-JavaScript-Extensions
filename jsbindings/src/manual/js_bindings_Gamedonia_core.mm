@@ -645,6 +645,29 @@ JSBool JSBGamedoniaCore_createUserWithOpenUDID(JSContext *cx, uint32_t argc, jsv
 	return JS_TRUE;
 };
 
+JSBool JSBGamedoniaCore_createUserWithGameCenterId(JSContext *cx, uint32_t argc, jsval *vp)
+{
+    JSB_PRECONDITION3( argc == 1, cx, JS_FALSE, "Invalid number of arguments" );
+    jsval *argvp = JS_ARGV(cx,vp);
+    
+    NSString *p1_;
+    
+    JSBool ok = JS_TRUE;
+    ok &= jsval_to_NSString(cx, argvp[0], &p1_);
+    JSB_PRECONDITION3(ok, cx, JS_FALSE, "Error processing arguments");
+    
+    GDUser* ret_val;
+	ret_val = [[[GDUser alloc] init]autorelease];
+    Credentials *c = [[[Credentials alloc] init] autorelease];
+	[ret_val setCredentials:c];
+    
+    [c setGamecenter_id:p1_];
+    
+	JSObject *jsobj = get_or_create_jsobject_from_realobj( cx, ret_val );
+	JS_SET_RVAL(cx, vp, OBJECT_TO_JSVAL(jsobj));
+	return JS_TRUE;
+};
+
 JSBool JSBGamedoniaCore_createUserWithFacebookId(JSContext *cx, uint32_t argc, jsval *vp)
 {
     JSB_PRECONDITION3( argc == 2, cx, JS_FALSE, "Invalid number of arguments" );
@@ -664,29 +687,6 @@ JSBool JSBGamedoniaCore_createUserWithFacebookId(JSContext *cx, uint32_t argc, j
     
     [c setFb_uid:p1_];
     [c setFb_access_token:p2_];
-    
-	JSObject *jsobj = get_or_create_jsobject_from_realobj( cx, ret_val );
-	JS_SET_RVAL(cx, vp, OBJECT_TO_JSVAL(jsobj));
-	return JS_TRUE;
-};
-
-JSBool JSBGamedoniaCore_createUserWithGameCenterId(JSContext *cx, uint32_t argc, jsval *vp)
-{
-    JSB_PRECONDITION3( argc == 1, cx, JS_FALSE, "Invalid number of arguments" );
-    jsval *argvp = JS_ARGV(cx,vp);
-    
-    NSString *p1_;
-    
-    JSBool ok = JS_TRUE;
-    ok &= jsval_to_NSString(cx, argvp[0], &p1_);
-    JSB_PRECONDITION3(ok, cx, JS_FALSE, "Error processing arguments");
-    
-    GDUser* ret_val;
-	ret_val = [[[GDUser alloc] init]autorelease];
-    Credentials *c = [[[Credentials alloc] init] autorelease];
-	[ret_val setCredentials:c];
-    
-    [c setGamecenter_id:p1_];
     
 	JSObject *jsobj = get_or_create_jsobject_from_realobj( cx, ret_val );
 	JS_SET_RVAL(cx, vp, OBJECT_TO_JSVAL(jsobj));

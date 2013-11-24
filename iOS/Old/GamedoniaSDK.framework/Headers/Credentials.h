@@ -1,5 +1,5 @@
 //
-//  GDUser.h
+//  Credentials.h
 //  gamedoniasdk
 //
 //  Created by Alberto Xaubet Matesanz on 07/11/12.
@@ -7,15 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GDUserProfile.h"
-
 
 //AUTHENTICATION METHODS
-#define AUTH_METHOD_SILENT      @"silent"
-#define AUTH_METHOD_MAIL        @"mail"
-#define AUTH_METHOD_FACEBOOK    @"facebook"
-#define AUTH_METHOD_TWITTER     @"twitter"
-#define AUTH_METHOD_GAMECENTER  @"gamecenter"
+#define AUTH_METHOD_SILENT      @"SILENT"
+#define AUTH_METHOD_MAIL        @"MAIL"
+#define AUTH_METHOD_FACEBOOK    @"FACEBOOK"
+#define AUTH_METHOD_TWITTER     @"TWITTER"
+#define AUTH_METHOD_GAMECENTER  @"GAMECENTER"
 
 @interface Credentials : NSObject {
 
@@ -52,15 +50,5 @@
 -(void)setGamecenter_id: (NSString *)value;
 
 - (NSDictionary *) toDictionary;
-- (void) fromJSON:(id)JSON;
-
-@end
-
-@interface GDUser : GDUserProfile
-
-    @property Credentials *credentials;
-
-- (NSDictionary *) toDictionary;
-- (void) fromJSON:(id)JSON;
 
 @end
